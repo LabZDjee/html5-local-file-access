@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loc File Test</title>
+    <!-- crypto-js: core ~23KiB, md5 ~10KiB (not minified) -->
+    <script src="./crypto-js/core.js"></script>
+    <script src="./crypto-js/md5.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script> -->
+   
+     <style>
+      body {
+        font-family: sans-serif; 
+        background-color: #FFF8F8;     
+        margin: auto;
+        max-width: 960px;
+      }
+      .button-like {
+        text-decoration: none;
+        background-color: #FEE;
+        color: #433;
+        padding: 2px 6px 2px 6px;
+        border-top: 1px solid #DCC;
+        border-right: 1px solid #433;
+        border-bottom: 1px solid #433;
+        border-left: 1px solid #DCC;
+        border-radius: 3px;
+      }
+      div.def-div {
+        border-top: 1px solid #DCC;
+        border-right: 1px solid #433;
+        border-bottom: 1px solid #433;
+        border-left: 1px solid #DCC;
+        border-radius: 3px;
+        margin: 1em;
+        padding: 1em;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow: auto;
+      }
+      h1.i, h2.i {
+        display: inline;
+      }
+      input[type="file"] {
+       display: none;
+      }
+      a.disabled {
+        pointer-events: none;
+        background: lightgrey;
+      }
+    </style>
+</head>
+
+<body>
+<h1 class="i">Grab Local File and Storage in Download Area</h1>
+<h2 class="i">(with md5)</h2>
+<div class="def-div">
+  <!-- special input used to pick a file -->
+  <label for="filePicker" class="button-like">
+   File to upload...
+  </label>
+  <input type="file" id="filePicker">&nbsp;
+  <i><span id="uploadFilename">&lt;&lt;undefined&gt;&gt;</span></i>
+</div>
+<div class="def-div">
+  <label for="fileName-input">File name:</label>
+  <input type="text" id="storeFileName" name="fileName-input"
+         placeholder="File name to store in download area" style="width: 250px;">
+  <!-- special output to store a file in download area -->
+  <a href="" download="" id="save" class="button-like disabled">store in download area</a>
+</div>
+<div class="def-div">
+  <h2>md5: <pre id="md5" style="display: inline"><i>&lt;&lt;undefined&gt;&gt;</i></pre></h2>
+  <h2>File contents:</h2>
+  <div class="def-div"><pre id="fileContents">
+  </pre></div>
+</div>
+</body>
+<script>
+
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+      console.log("Great success! All the File APIs are supported.");
+    } else {
+      alert("The File API's are not fully supported in this browser.");
+    }
+   
+    var contentDomElement=document.getElementById("fileContents");
+    var filePickerDomElement = document.getElementById("filePicker");
+    var md5DomElement = document.getElementById("md5");
+    var storeFileNameDomElement = document.getElementById("storeFileName");
+    var uploadFilename = null;
+    var storeFileName;
+
+    function updateContents(newContents) {
+      contentDomElement.innerHTML = newContents;
+      md5.innerHTML = CryptoJS.MD5(newContents);
+    }
+
+    filePickerDomElement.addEventListener("change", function(){
+       uploadFilename=storeFileName=filePickerDomElement.files[0].name;
+       document.getElementById("uploadFilename").innerHTML = uploadFilename;
+       document.getElementById("storeFileName").value = uploadFilename;
+       onStoreFileNameUpdate();
+       var reader = new FileReader();
+       var file = filePickerDomElement.files[0];
+       reader.onload = function(event) {
+         updateContents(reader.result); // also event.target.result
+        };
+        reader.onerror = function(event) {
+         alert(event.target.error);
+        }
+       reader.readAsText(file);
+      });
+     
+    var textBlob = "Voluptate elit anim aute voluptate irure aliqua culpa do in veniam do est. Cillum sit sit irure do dolore laboris voluptate mollit officia occaecat reprehenderit nulla est. Tempor cupidatat consequat sit tempor tempor laborum eiusmod aliqua commodo officia enim Lorem aliquip.\nAliqua ad anim qui eu incididunt adipisicing ipsum exercitation amet anim. Sunt id duis aliquip sunt amet duis anim ex nostrud qui officia consequat qui velit. Laboris voluptate voluptate ut pariatur incididunt est reprehenderit. Ipsum incididunt pariatur duis excepteur reprehenderit nisi reprehenderit. Dolore cillum ex voluptate consectetur eiusmod sint culpa amet anim dolore ullamco.\nCupidatat duis aliqua incididunt veniam dolor officia magna quis dolore fugiat non adipisicing magna. Eiusmod magna nulla magna non veniam magna laborum. Eu minim ad fugiat dolore voluptate sint nisi esse eiusmod labore veniam anim. Cupidatat sint qui mollit culpa voluptate cupidatat cillum dolore dolor duis minim non qui adipisicing. Dolor ea fugiat labore nisi voluptate laborum adipisicing irure velit aliqua. Ad enim ipsum nostrud ex incididunt.\nAnim reprehenderit aliquip dolore nulla voluptate dolore veniam. Non exercitation proident id eu. Velit ut sit minim laborum occaecat amet cupidatat eu proident consectetur consequat nulla.\nVelit tempor proident aliquip aute aute excepteur officia cupidatat elit. Deserunt proident ipsum eiusmod consectetur ad reprehenderit officia qui ad. Amet eu minim excepteur ullamco cillum duis eu dolore officia nostrud id pariatur nostrud. Cillum proident non sunt proident ad quis nulla exercitation commodo eiusmod fugiat. Magna do aliquip adipisicing consequat duis laborum. Dolore labore non eu duis consequat deserunt. Officia mollit in ut dolor cupidatat pariatur occaecat nostrud reprehenderit dolor cupidatat laboris.\n\n";
+    textBlob += textBlob;
+    textBlob += textBlob;
+    textBlob += textBlob;
+    textBlob += textBlob;
+    textBlob += textBlob;
+
+    updateContents(textBlob);
+
+    var textFile = null;
+    makeTextFile = function (text) {
+           var data = new Blob([text], {type: 'text/plain'});
+           // If we are replacing a previously generated file we need to
+           // manually revoke the object URL to avoid memory leaks.
+          if (textFile !== null) {
+           window.URL.revokeObjectURL(data);
+         }
+        textFile = window.URL.createObjectURL(data);
+        return textFile;
+      };
+
+    var saveDomElement = document.getElementById("save");
+
+    function onStoreFileNameUpdate() {
+        if(storeFileName.length>0)
+         saveDomElement.classList.remove("disabled");
+        else
+         saveDomElement.classList.add("disabled");
+        saveDomElement.download=storeFileName;
+     }
+
+   storeFileNameDomElement.addEventListener("input",
+      function(event) {
+        storeFileName=event.target.value;
+        onStoreFileNameUpdate();
+      });
+   storeFileNameDomElement.value="";
+
+   saveDomElement.href=makeTextFile(textBlob);
+</script>
+
+</html>
