@@ -4,6 +4,10 @@
 
 Reference test in vanilla [HTML5](https://en.wikipedia.org/wiki/HTML5) to both read and store plain text files. As per browser constraints any file can be selected from reading and storage imposes no special filename but path is obligatory and implicitly located the *download* area managed by most browsers
 
+## Runtime
+
+This test can be run from: https://labzdjee.github.io/html5-local-file-access
+
 ## Reading
 
 ### Selecting File Name
@@ -40,7 +44,7 @@ So, this `<a href="` element must have a `download` attribute with value the fil
 
 Technically speaking what we can write is an object `data` of class `Blob`. This object is created with parameters `[text], {type: 'text/plain'}` This mime type could of course be refined such as text/xml... `text` is a string which contains file content
 
-From this data [Blob](https://en.wikipedia.org/wiki/Binary_large_object), we have the `href` value called an *object URL* as `window.URL.createObjectURL(data)` . However, this value is stored in a variable in order to call `window.URL.revokeObjectURL(data)`  in case it has already being assigned, this to avoid memory leaks. This is the main reason why we have the `onStoreFileNameUpdate`  helper
+From this data [Blob](https://en.wikipedia.org/wiki/Binary_large_object), we have the `href` value called an *object URL* as `window.URL.createObjectURL(data)` . However, this value is stored in a variable in order to call `window.URL.revokeObjectURL(previousUrlObject)`  in case it has already being assigned, this to avoid memory leaks. This is the main reason why we have the `onStoreFileNameUpdate`  helper
 
 When users click this special `<a` link, they are sometimes prompted through a dialog box to confirm they are okay to save. In fact, what happens on such click greatly depends on the browser implementation
 

@@ -77,7 +77,8 @@
   </div>
   <div class="def-div">
     <label for="fileName-input">File name:</label>
-    <input type="text" id="storeFileName" name="fileName-input" placeholder="File name to store in download area" style="width: 250px;">
+    <input type="text" id="storeFileName" name="fileName-input" placeholder="File name to store in download area"
+      style="width: 250px;">
     <!-- special output to store a file in download area -->
     <a href="" download="" id="save" class="button-like disabled">store in download area</a>
   </div>
@@ -118,21 +119,21 @@
   makeTextFile = function (text) {
     var data;
     var option = { type: "text/plain" };
-    if(utf8Sucess) {
+    if (utf8Sucess) {
       data = new Blob([text], option);
     } else {
       // assumes Latin-1 + Latin-1 supplement (from U+0000 to U+00FF, only 8-bit so)
       var textLength = text.length;
       var genericBuffer = new ArrayBuffer(textLength);
       var bufferContents = new Uint8Array(genericBuffer);
-      for(var i=0; i<textLength; i++)
-       bufferContents[i] = text.charCodeAt(i) & 255;
+      for (var i = 0; i < textLength; i++)
+        bufferContents[i] = text.charCodeAt(i) & 255;
       data = new Blob([genericBuffer], option);
     }
     // If we are replacing a previously generated file we need to
     // manually revoke the object URL to avoid memory leaks.
     if (textFile !== null) {
-      window.URL.revokeObjectURL(data);
+      window.URL.revokeObjectURL(textFile);
     }
     textFile = window.URL.createObjectURL(data);
     return textFile;
